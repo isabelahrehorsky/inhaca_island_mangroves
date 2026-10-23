@@ -1,1 +1,15 @@
-{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"properties":{"name":"Inhaca Island"}},"geometry":{"type":"LineString","coordinates":[[32.888733,-26.001395],[32.888733,-26.001395]]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[32.940111,-26.017833]}}]}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Inhaca Island"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [32.940111, -26.017833]
+      }
+    }
+  ]
+}
