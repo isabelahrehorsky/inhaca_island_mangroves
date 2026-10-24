@@ -15,7 +15,7 @@
       position: absolute;
       top: 12px;
       left: 12px;
-      max-width: 280px;
+      max-width: 290px;
       background: rgba(20, 24, 28, 0.85);
       color: #f2f2f2;
       padding: 14px 16px;
@@ -26,13 +26,35 @@
     }
     #panel h1 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
     #panel p { margin: 0 0 10px; color: #d6d6d6; }
+
+    /* Year / view buttons */
+    #views { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 10px; }
+    #views button {
+      flex: 1 1 auto;
+      font: inherit;
+      font-size: 12px;
+      padding: 5px 8px;
+      border: 1px solid #5a6168;
+      border-radius: 4px;
+      background: transparent;
+      color: #e6e6e6;
+      cursor: pointer;
+    }
+    #views button:hover { background: rgba(255, 255, 255, 0.08); }
+    #views button[aria-pressed="true"] {
+      background: #e6e6e6;
+      color: #14181c;
+      border-color: #e6e6e6;
+      font-weight: 600;
+    }
+
     .legend-row { display: flex; align-items: center; margin: 4px 0; }
     .swatch {
       width: 16px; height: 12px; margin-right: 8px;
       border-radius: 2px; flex-shrink: 0;
     }
+    #view-note { font-size: 11px; color: #c9c9c9; margin-top: 8px; min-height: 1em; }
     .note { font-size: 11px; color: #a9a9a9; margin-top: 10px; }
-    .note a { color: #a8dcff; }
 
     @media (max-width: 500px) {
       #panel { max-width: calc(100% - 48px); font-size: 12px; }
@@ -46,9 +68,15 @@
     <h1>Mangrove change in Maputo Bay, 1996–2020</h1>
     <p>Notice areas around Maputo Bay for Mangrove Decline.</p>
 
-    <div class="legend-row"><span class="swatch" style="background:#b77fb0"></span>Mangrove present throughout (stable)</div>
-    <div class="legend-row"><span class="swatch" style="background:#ff8a3d"></span>Lost since 1996</div>
-    <div class="legend-row"><span class="swatch" style="background:#3fe0c5"></span>Gained since 1996</div>
+    <div id="views" role="group" aria-label="Choose a year or view">
+      <button type="button" data-view="change" aria-pressed="true">Change</button>
+      <button type="button" data-view="1996" aria-pressed="false">1996</button>
+      <button type="button" data-view="2020" aria-pressed="false">2020</button>
+      <button type="button" data-view="2025" aria-pressed="false">2025</button>
+    </div>
+
+    <div id="legend"></div>
+    <div id="view-note"></div>
 
     <div class="note">
       Data: Global Mangrove Watch v3.0 (Bunting et al. 2022), 25 m resolution.
@@ -65,6 +93,94 @@
     });
     map.addControl(new maplibregl.NavigationControl());
     map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
+
+    // Layer ids from the Maputnik style
+    const FILL = 'mangrove_change_1996_2020';
+    const OUTLINE = 'mangrove_change_outline';
+    const EXTENT_2025 = 'mangroves_extent_2025';
+
+    const MANGROVE = '#b77fb0';
+    const LOSS = '#ff8a3d';
+    const GAIN = '#3fe0c5';
+
+    // What each button shows
+    const VIEWS = {
+      change: {
+        legend: [
+          [MANGROVE, 'Mangrove present throughout (stable)'],
+          [LOSS, 'Lost since 1996'],
+          [GAIN, 'Gained since 1996']
+        ],
+        note: 'Change between 1996 and 2020.'
+      },
+      '1996': {
+        statuses: ['stable', 'loss'],
+        legend: [[MANGROVE, 'Mangrove extent, 1996']],
+        note: 'Approximate: stable core plus areas later lost.'
+      },
+      '2020': {
+        statuses: ['stable', 'gain'],
+        legend: [[MANGROVE, 'Mangrove extent, 2020']],
+        note: 'Approximate: stable core plus areas gained since 1996.'
+      },
+      '2025': {
+        legend: [[MANGROVE, 'Mangrove extent, 2025']],
+        note: 'Inhaca only, from a newer, different dataset. Not directly comparable with 1996–2020.'
+      }
+    };
+
+    let changeColor = null; // the match expression from the style, saved on load
+
+    function hasLayer(id) {
+      if (map.getLayer(id)) return true;
+      console.warn('Layer not found in style.json:', id);
+      return false;
+    }
+
+    function setVisible(id, visible) {
+      if (hasLayer(id)) map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+    }
+
+    function showView(name) {
+      const view = VIEWS[name];
+
+      if (name === '2025') {
+        setVisible(FILL, false);
+        setVisible(OUTLINE, false);
+        setVisible(EXTENT_2025, true);
+        if (hasLayer(EXTENT_2025)) map.setPaintProperty(EXTENT_2025, 'fill-color', MANGROVE);
+      } else {
+        setVisible(EXTENT_2025, false);
+        setVisible(FILL, true);
+        if (hasLayer(FILL)) {
+          if (name === 'change') {
+            map.setFilter(FILL, null);
+            map.setPaintProperty(FILL, 'fill-color', changeColor);
+          } else {
+            map.setFilter(FILL, ['in', ['get', 'status'], ['literal', view.statuses]]);
+            map.setPaintProperty(FILL, 'fill-color', MANGROVE);
+          }
+        }
+        // Gain/loss outlines only make sense in the change view
+        setVisible(OUTLINE, name === 'change');
+      }
+
+      // Update legend, note and button states
+      document.getElementById('legend').innerHTML = view.legend
+        .map(([color, label]) =>
+          '<div class="legend-row"><span class="swatch" style="background:' + color + '"></span>' + label + '</div>')
+        .join('');
+      document.getElementById('view-note').textContent = view.note;
+      document.querySelectorAll('#views button').forEach(b =>
+        b.setAttribute('aria-pressed', String(b.dataset.view === name)));
+    }
+
+    map.on('load', () => {
+      if (hasLayer(FILL)) changeColor = map.getPaintProperty(FILL, 'fill-color');
+      document.querySelectorAll('#views button').forEach(b =>
+        b.addEventListener('click', () => showView(b.dataset.view)));
+      showView('change');
+    });
   </script>
 </body>
 </html>
