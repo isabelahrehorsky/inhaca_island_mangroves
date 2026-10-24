@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mangrove change in Maputo Bay, 1996–2020</title>
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    #map { position: absolute; inset: 0; }
+
+    /* Info + legend panel */
+    #panel {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      max-width: 280px;
+      background: rgba(20, 24, 28, 0.85);
+      color: #f2f2f2;
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+    }
+    #panel h1 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
+    #panel p { margin: 0 0 10px; color: #d6d6d6; }
+    .legend-row { display: flex; align-items: center; margin: 4px 0; }
+    .swatch {
+      width: 16px; height: 12px; margin-right: 8px;
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .note { font-size: 11px; color: #a9a9a9; margin-top: 10px; }
+    .note a { color: #a8dcff; }
+
+    @media (max-width: 500px) {
+      #panel { max-width: calc(100% - 48px); font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="panel">
+    <h1>Mangrove change in Maputo Bay, 1996–2020</h1>
+    <p>REPLACE THIS with one sentence, in your own words, on what the reader should notice.</p>
+
+    <div class="legend-row"><span class="swatch" style="background:#b77fb0"></span>Mangrove present throughout (stable)</div>
+    <div class="legend-row"><span class="swatch" style="background:#ff8a3d"></span>Lost since 1996</div>
+    <div class="legend-row"><span class="swatch" style="background:#3fe0c5"></span>Gained since 1996</div>
+
+    <div class="note">
+      Data: Global Mangrove Watch v3.0 (Bunting et al. 2022), 25 m resolution.
+      Imagery: Esri, Maxar, Earthstar Geographics.
+    </div>
+  </div>
+
+  <script>
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'style.json',           // the file you download from Maputnik
+      center: [32.75, -26.05],       // longitude, latitude: centre of Maputo Bay
+      zoom: 10
+    });
+    map.addControl(new maplibregl.NavigationControl());
+    map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
+  </script>
+</body>
+</html>
