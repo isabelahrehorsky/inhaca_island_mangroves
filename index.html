@@ -10,7 +10,7 @@
     body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     #map { position: absolute; inset: 0; }
 
-    / Info + legend panel /
+    /Info + legend panel /
     #panel {
       position: absolute;
       top: 12px;
@@ -27,7 +27,7 @@
     #panel h1 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
     #panel p { margin: 0 0 10px; color: #d6d6d6; }
 
-    / Year / view buttons /
+    /Year / view buttons/
     #views { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 10px; }
     #views button {
       flex: 1 1 auto;
@@ -37,16 +37,33 @@
       border: 1px solid #5a6168;
       border-radius: 4px;
       background: transparent;
-      color: #e6e6e6;
+      color: #a9a9a9;
       cursor: pointer;
     }
-    #views button:hover { background: rgba(255, 255, 270, 0.08); }
+    #views button:hover { background: rgba(255, 255, 255, 0.08); }
     #views button[aria-pressed="true"] {
       background: #e6e6e6;
       color: #14181c;
       border-color: #e6e6e6;
       font-weight: 600;
     }
+    #views button [data-view ="change"]{aria-pressed="true"]{
+      background: #e6e6e6;
+      border-color:#e6e6e6;
+      color:#14181c;
+    }
+
+    #views button[data-view='1996'][aria-pressed= "true"]{
+    background:#8fa3c7;
+    border-color:#8fa3c7;
+    color:#14181c:
+  }
+
+  #views button[data-view="2020"][aria-pressed="true"]{
+    background;#b77fb0;
+    border-color:#b77fb0;
+    color:#14181c;
+  }
 
     .legend-row { display: flex; align-items: center; margin: 4px 0; }
     .swatch {
@@ -78,7 +95,7 @@
     <div id="view-note"></div>
 
     <div class="note">
-      Data: Global Mangrove Watch v3.0 (Bunting et al. 2022). 
+      Data: Global Mangrove Watch v3.0 (Bunting et al. 2022), 25 m resolution.
       Imagery: Esri, Maxar, Earthstar Geographics.
     </div>
   </div>
@@ -86,7 +103,7 @@
   <script>
     const map = new maplibregl.Map({
       container: 'map',
-      style: 'style.json',           // from Maputnik
+      style: 'style.json',           // the file you download from Maputnik
       center: [32.75, -26.05],       // longitude, latitude: centre of Maputo Bay
       zoom: 10
     });
@@ -159,6 +176,13 @@
       document.querySelectorAll('#views button').forEach(b =>
         b.setAttribute('aria-pressed', String(b.dataset.view === name)));
     }
+
+    // Show the legend straight away, even before the map finishes loading
+    document.getElementById('legend').innerHTML = VIEWS.change.legend
+      .map(([color, label]) =>
+        '<div class="legend-row"><span class="swatch" style="background:' + color + '"></span>' + label + '</div>')
+      .join('');
+    document.getElementById('view-note').textContent = VIEWS.change.note;
 
     map.on('load', () => {
       if (hasLayer(FILL)) changeColor = map.getPaintProperty(FILL, 'fill-color');
