@@ -10,7 +10,7 @@
     body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     #map { position: absolute; inset: 0; }
 
-    /Info + legend panel /
+    /*Info + legend panel */
     #panel {
       position: absolute;
       top: 12px;
@@ -27,7 +27,7 @@
     #panel h1 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
     #panel p { margin: 0 0 10px; color: #d6d6d6; }
 
-    /Year / view buttons/
+    /*Year / view buttons*/
     #views { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 10px; }
     #views button {
       flex: 1 1 auto;
@@ -47,7 +47,7 @@
       border-color: #e6e6e6;
       font-weight: 600;
     }
-    #views button [data-view ="change"]{aria-pressed="true"]{
+    #views button [data-view="change"][aria-pressed="true"] {
       background: #e6e6e6;
       border-color:#e6e6e6;
       color:#14181c;
@@ -56,11 +56,11 @@
     #views button[data-view='1996'][aria-pressed= "true"]{
     background:#8fa3c7;
     border-color:#8fa3c7;
-    color:#14181c:
+    color:#14181c;
   }
 
   #views button[data-view="2020"][aria-pressed="true"]{
-    background;#b77fb0;
+    background:#b77fb0;
     border-color:#b77fb0;
     color:#14181c;
   }
