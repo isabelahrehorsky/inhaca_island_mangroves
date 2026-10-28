@@ -14,7 +14,11 @@ As users zoom in, the map becomes increasingly focused on the mangrove areas, al
  Typography white labels with dark halos on imagery, water labels blue and letter spacing was simple but affective for this map. Then once you zoom in you are able to solely see the mangroves! Along with the visual styling I made a label file since the basemaps labels were empty dots. The labels I chose were in areas where there was a loss of mangroves, as well as large settlements with the exemption of Inhaca island which’s settlement is around 3000, which fun fact is only 1/3 of UBC yearly graduating class. 
 For comparison between the two years, I drew on knowledge from a previous JavaScript mapping project. This allowed me to incorporate an interactive comparison rather than relying on two separate static maps. 
 
-Limitations and improvements
-Limitations: I want to map the whole coast of Mozambique, but this would have taken too much data and also time. I am happy how this map turned out and I will be helpful for the future to decided what areas we should travel to or study. 
-Use of AI: I knew I wanted to make a comparison between the two years, but I was unsure exactly how code them, so I did us AI to figure out the code to have the buttons.  I asked AI to give me the functions for the buttons and comparison, then with my previous JavaScript background I was able to fill the rest in. Troubleshooting for the code index was a large part, since I have trouble seeing the errors in code.  I luckily have a background in JavaScript which did make this an easier task to complete. 
-<img width="468" height="649" alt="image" src="https://github.com/user-attachments/assets/b2f7f9bb-f339-4fa2-80f7-263c17ef311e" />
+Limitations and improvements: Limitations: I want to map the whole coast of Mozambique, but this would have taken too much data and also time. I am happy how this map turned out and I will be helpful for the future to decided what areas we should travel to or study. Critique from Gil, was to change the buttons to different colors. But as I tried to change the code the code crashed, so for sake of the project I left the buttons the same color. 
+Use of AI: I used Claude to troubleshoot code I wrote, for the buttons. 
+<img width="468" height="137" alt="image" src="https://github.com/user-attachments/assets/00f96b52-d6d9-48d6-b6c3-d69446f25398" />
+
+<img width="781" height="769" alt="Screenshot 2026-10-28 at 4 07 53 PM" src="https://github.com/user-attachments/assets/e9278eb8-50e0-425d-a7d4-87339a7bf47b" />
+
+
+
