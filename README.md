@@ -16,7 +16,6 @@ For comparison between the two years, I drew on knowledge from a previous JavaSc
 
 Limitations and improvements: Limitations: I want to map the whole coast of Mozambique, but this would have taken too much data and also time. I am happy how this map turned out and I will be helpful for the future to decided what areas we should travel to or study. Critique from Gil, was to change the buttons to different colors. But as I tried to change the code the code crashed, so for sake of the project I left the buttons the same color. 
 Use of AI: I used Claude to troubleshoot code I wrote, for the buttons. 
-<img width="468" height="137" alt="image" src="https://github.com/user-attachments/assets/00f96b52-d6d9-48d6-b6c3-d69446f25398" />
 
 <img width="781" height="769" alt="Screenshot 2026-10-28 at 4 07 53 PM" src="https://github.com/user-attachments/assets/e9278eb8-50e0-425d-a7d4-87339a7bf47b" />
 
